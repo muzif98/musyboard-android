@@ -1,0 +1,14 @@
+<!--
+    keyboard-cipher: background of the compose row's drop-down menu.
+
+    Shape only: `CipherCompose.bind` sets the colour from the palette
+    (POPUP_KEYS_BACKGROUND), because a colour written here would be the only
+    element of the keyboard not following the user's theme.
+
+    The corner radius matches the panel shown when holding a key, the only other
+    drop-down this keyboard shows.-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#FFFFFF" />
+    <corners android:radius="8dp" />
+</shape>

@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2012 The Android Open Source Project
+modified
+SPDX-License-Identifier: Apache-2.0 AND GPL-3.0-only
+-->
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.READ_USER_DICTIONARY" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_USER_DICTIONARY" />
+    <!--
+      Only for the service that keeps the keyboard alive, which is OFF by
+      default: see CipherKeepAlive and `PREF_KEEP_ALIVE`. Declaring them enables
+      nothing: the notification appears only if the user turns the switch on,
+      and on Android 13+ the permission is requested at that moment.
+
+      `specialUse` because none of the predefined types describes what we do: no
+      playback, no location, no sync. The service does no work; it only exists,
+      to keep the phone's battery manager from stopping the process that watches
+      the clipboard.
+    -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application android:label="@string/english_ime_name"
+            android:name="helium314.keyboard.latin.App"
+            android:icon="@mipmap/ic_launcher"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:allowBackup="true"
+            android:defaultToDeviceProtectedStorage="true"
+            android:directBootAware="true"
+            android:enableOnBackInvokedCallback="true"
+            android:localeConfig="@xml/locales_config"
+            tools:remove="android:appComponentFactory"
+            tools:targetApi="33">
+
+        <!-- Services -->
+        <service android:name="LatinIME"
+                android:label="@string/english_ime_name"
+                android:permission="android.permission.BIND_INPUT_METHOD"
+                android:directBootAware="true"
+                android:exported="true">
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+            <meta-data android:name="android.view.im" android:resource="@xml/method_dummy" />
+        </service>
+
+        <!-- keyboard-cipher: see CipherKeepAlive. Not exported: only the app starts it,
+             when the user turns the switch on.-->
+        <service android:name="helium314.keyboard.cipher.CipherKeepAlive"
+                android:exported="false"
+                android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Keeps the keyboard process alive so it can notice encrypted messages copied to the clipboard; the OS offers no clipboard wake-up event." />
+        </service>
+
+        <service android:name=".spellcheck.AndroidSpellCheckerService"
+                 android:label="@string/spell_checker_service_name"
+                 android:permission="android.permission.BIND_TEXT_SERVICE"
+                 android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.textservice.SpellCheckerService" />
+            </intent-filter>
+            <meta-data android:name="android.view.textservice.scs"
+                    android:resource="@xml/spellchecker" />
+        </service>
+
+        <!-- Activities -->
+        <activity android:name="helium314.keyboard.settings.SettingsActivity"
+                android:theme="@style/platformActivityTheme"
+                android:icon="@mipmap/ic_launcher"
+                android:windowSoftInputMode="adjustResize"
+                android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- separate activity that's used internally, only necessary in case the launcher icon is disabled on Android < 10 -->
+        <activity android:name="helium314.keyboard.settings.SettingsActivity2"
+            android:theme="@style/platformActivityTheme"
+            android:icon="@mipmap/ic_launcher"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true">
+            <!-- intent filter for opening .dict files -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:mimeType="application/octet-stream" android:scheme="content" android:host="*" android:pathPattern=".*\\.dict" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".spellcheck.SpellCheckerSettingsActivity"
+                android:theme="@style/platformActivityTheme"
+                android:label="@string/spell_checker_service_name"
+                android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="helium314.keyboard.keyboard.emoji.EmojiSearchActivity" android:exported="false"
+            android:theme="@style/TransparentActivityTheme" android:excludeFromRecents="true" android:noHistory="true"
+            android:windowSoftInputMode="adjustResize|stateAlwaysVisible" android:configChanges="orientation|screenSize"/>
+
+        <!-- Broadcast receivers -->
+        <receiver android:name="SystemBroadcastReceiver"
+                android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_INITIALIZE" />
+                <action android:name="android.intent.action.LOCALE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="DictionaryPackInstallBroadcastReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="helium314.keyboard.dictionarypack.aosp.UNKNOWN_CLIENT" />
+            </intent-filter>
+        </receiver>
+
+        <!-- for pasting files from internal clipboard -->
+        <provider android:name="helium314.keyboard.latin.database.ClipboardContentProvider"
+            android:authorities="@string/clipboard_provider_authority"
+            android:enabled="true"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/clipboard_provider_path"/>
+        </provider>
+
+        <!--
+            keyboard-cipher: exposes to the chat app only the encrypted
+            attachment just produced. `exported=false` with per-URI permissions:
+            the recipient of the intent reads that file while the grant lasts, and
+            no other app can query the provider.
+        -->
+        <provider android:name="helium314.keyboard.cipher.CipherFileProvider"
+            android:authorities="${applicationId}.cipherfiles"
+            android:enabled="true"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/cipher_file_path"/>
+        </provider>
+
+        <!-- necessary for sending mail attachments, remove when data gathering phase is done (end of 2026 latest) -->
+        <provider android:name="helium314.keyboard.settings.screens.gesturedata.GestureFileProvider"
+            android:authorities="@string/gesture_data_provider_authority"
+            android:enabled="true"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/gesture_data_path"/>
+        </provider>
+    
+    <!-- keyboard-cipher -->
+<!--
+  Receives text selected in another app (standard selection toolbar) and text
+  shared through the share sheet.
+
+  Security attributes, all required for an activity showing plaintext:
+
+  exported=true      required to receive intents from other apps. Anyone can
+                     send us text: acceptable, because the activity only
+                     decrypts and shows, and never returns anything to the
+                     caller (see DecryptActivity).
+
+  NO noHistory       the property (plaintext not reachable by going back) is
+                     still there, implemented in `onStop`. The flag also closed
+                     the window when WE put the "where to save" picker in
+                     front, so nobody was left to write the file.
+
+  excludeFromRecents the system saves a screenshot of every activity to disk
+  =true              for the Recents screen. Without this, the decrypted text
+                     ends up in a file. FLAG_SECURE in code covers the same
+                     risk; redundant on purpose.
+
+  taskAffinity=""    keeps the activity out of the app's main task, so it does
+                     not appear next to the keyboard's screens.
+
+  launchMode         a single live instance: avoids several windows holding
+  =singleTask        plaintext in memory at once.
+
+  configChanges      on rotation Android would destroy and recreate the
+                     activity with the SAME intent, and onCreate would
+                     reprocess the blob. Decrypting is not read-only: it
+                     advances the chain, pins the key, and on a burn request
+                     BURNS. Doing it twice would run a burn twice and change an
+                     identity card screen by itself (the key already pinned).
+
+                     The change is handled instead of recreating: Compose
+                     relayouts by itself. The alternative (saving what to show
+                     in savedInstanceState) would put plaintext in a Bundle,
+                     i.e. in the system's hands.-->
+<activity
+    android:name="helium314.keyboard.cipher.DecryptActivity"
+    android:label="@string/cipher_decrypt_action"
+    android:exported="true"
+    android:excludeFromRecents="true"
+    android:taskAffinity=""
+    android:launchMode="singleTask"
+    android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|keyboardHidden|keyboard|uiMode|density|fontScale"
+    android:theme="@style/TransparentActivityTheme">
+
+    <!-- Path 2: text selection toolbar. Appears only in apps using the standard
+         Android toolbar; apps with a custom long-press menu do not show it. -->
+    <intent-filter>
+        <action android:name="android.intent.action.PROCESS_TEXT" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <data android:mimeType="text/plain" />
+    </intent-filter>
+
+    <!-- Via 3: share sheet. Fallback universale. -->
+    <intent-filter>
+        <action android:name="android.intent.action.SEND" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <data android:mimeType="text/plain" />
+    </intent-filter>
+
+    <!--
+        Encrypted attachments. Chat apps send a `.kc` as
+        `application/octet-stream`, the type of any file the system does not
+        recognise: appearing for all of those is the price of appearing for
+        ours, because the MIME type is the only thing an ACTION_SEND filter can
+        match on. Opening a file that is not ours shows "this text is not
+        encrypted" and closes.
+    -->
+    <intent-filter>
+        <action android:name="android.intent.action.SEND" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <data android:mimeType="application/octet-stream" />
+    </intent-filter>
+
+    <!--
+        Path 4: a `.kc` already saved on the phone, tapped in a file manager or
+        Downloads (`extractStream` reads `intent.data` for ACTION_VIEW).
+
+        Same price as the filter above, for the same reason: we appear in "Open
+        with" for any file the system cannot type.
+
+        A narrower second filter (content and file schemes with pathPattern
+        `.*\\.kc`, like the `.dict` one) was considered and rejected: it would
+        match a subset of this one, since a filter declaring only the mimeType
+        already covers both schemes. And it could not stand alone: on
+        `content://` the file name is often not in the path.
+    -->
+    <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:mimeType="application/octet-stream" />
+    </intent-filter>
+
+
+</activity>
+
+<!--
+  Explicit recipient choice, from the keyboard.
+
+  Same attributes as DecryptActivity for the same reasons: it shows
+  fingerprints, so FLAG_SECURE and no Recents thumbnail. NOT exported: reached
+  only from the keyboard, with the token saying which app.
+
+  Transparent window rather than a dialog theme: the Compose dialog draws its own
+  frame, the same as the contact card; a dialog theme would add a second one.
+
+  configChanges: the token saying which app we come from is SINGLE-USE. On
+  rotation Android would recreate the activity with the same intent, and the
+  second read would find no token: the screen would not know which app it is
+  choosing for and would refuse to work. As for DecryptActivity, the change is
+  handled instead of recreating.-->
+<activity
+    android:name="helium314.keyboard.cipher.RecipientActivity"
+    android:exported="false"
+    android:noHistory="true"
+    android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|keyboardHidden|keyboard|uiMode|density|fontScale"
+    android:excludeFromRecents="true"
+    android:taskAffinity=""
+    android:launchMode="singleTask"
+    android:theme="@style/TransparentActivityTheme" />
+
+<!--
+  Contacts, fingerprints and key conflicts.
+
+  NOT exported and NOT in the launcher: reached from the keyboard settings, like
+  any HeliBoard screen. A launcher icon would be a second visible marker of the
+  system, and would do nothing a settings entry does not.
+
+  Same theme as settings: it is reached from there with one tap, and a status
+  bar of another colour would make it feel like leaving the app.-->
+<!--
+  configChanges: there is state here that a recreation would silently reset.
+  The backup passphrase lives in memory between the moment the user types it
+  and the moment they choose where to save, and the system picker sits IN FRONT
+  of this activity: rotating with the picker open destroyed and recreated the
+  activity, the passphrase vanished, and the backup came out empty. Same cause
+  for sending an attachment.-->
+<activity
+    android:name="helium314.keyboard.cipher.ContactsActivity"
+    android:exported="false"
+    android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|keyboardHidden|keyboard|uiMode|density|fontScale"
+    android:excludeFromRecents="true"
+    android:theme="@style/platformActivityTheme" />
+
+    </application>
+
+    <queries>
+        <!-- To detect other IMEs -->
+        <intent>
+            <!-- changed to * as it's supposed to help with finding other keyboard apps, see https://github.com/HeliBorg/HeliBoard/issues/1340 -->
+            <!--<action android:name="android.view.InputMethod" />-->
+            <action android:name="*" />
+        </intent>
+
+        <!-- To detect names of installed apps -->
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+    </queries>
+</manifest>

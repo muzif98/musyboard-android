@@ -1,0 +1,17 @@
+<!--
+    Paper plane. Icon of the "send in clear" key: puts the text into the app's
+    field as it is, without encrypting.
+
+    Deliberately different from the padlocks, not an open padlock: open and
+    closed padlocks side by side are hard to tell apart at a glance, and this is
+    the key that sends plaintext.
+    icon from pictogrammers.com (Material Design Icons, "send")
+    SPDX-License-Identifier: Apache-2.0-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:height="24dp"
+    android:width="24dp"
+    android:viewportHeight="24"
+    android:viewportWidth="24" >
+  <path android:fillColor="#FFF"
+      android:pathData="M2,21L23,12L2,3V10L17,12L2,14V21Z"/>
+</vector>

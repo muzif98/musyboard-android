@@ -1,0 +1,1 @@
+Tastiera che cifra i messaggi prima che li veda l'app di chat

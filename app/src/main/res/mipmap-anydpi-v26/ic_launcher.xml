@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    MusyBoard adaptive icon.
+
+    The artwork is a circle placed in the central 72dp of the 108dp canvas, the
+    area the system shows: with a circular mask the circle fills it exactly,
+    ring included.
+
+    The background is a solid colour taken from the artwork; it only shows in
+    the corners with square masks.
+
+    No `monochrome`: that channel wants a flat silhouette, and given an image the
+    launcher's themed mode would reduce it to a blob. Without it, themed icons
+    simply show the normal icon.-->
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/ic_launcher_background"/>
+    <foreground android:drawable="@mipmap/ic_launcher_foreground"/>
+</adaptive-icon>

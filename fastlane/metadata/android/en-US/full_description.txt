@@ -1,0 +1,34 @@
+MusyBoard is a keyboard that encrypts what you write <b>inside the keyboard</b>, before the text reaches the chat app. WhatsApp, Telegram, SMS or any other app only ever receive an encrypted message; the plain text never enters them.
+
+It is a fork of <a href="https://github.com/Helium314/HeliBoard">HeliBoard</a>, so it is also a complete, private keyboard: layouts for many languages, suggestions, gestures, themes. Like HeliBoard, it has <b>no internet permission</b>.
+
+<b>How it works</b>
+<ul>
+<li>You write in a row inside the keyboard. The app's text field stays empty.</li>
+<li>Press the lock: the message is encrypted for the person you are writing to and put in the field, ready to send.</li>
+<li>The other person copies the message (or selects it and chooses "Decrypt"), and their keyboard shows it in a protected window.</li>
+<li>The first time, you exchange a short introduction, or scan a QR code in person to be sure nobody is in the middle.</li>
+</ul>
+
+<b>Features</b>
+<ul>
+<li>Modern cryptography: X25519, XChaCha20-Poly1305, HKDF-SHA-256, in a small open-source Rust core.</li>
+<li>Forward secrecy (on by default): someone who takes your phone and keys later cannot reopen past messages.</li>
+<li>Alternatively, a re-readable conversation that you can "burn" for both sides.</li>
+<li>Encrypted photos, videos and files, sent as attachments.</li>
+<li>Group messages, with clear warnings about what a group cannot guarantee.</li>
+<li>Contact fingerprints to compare in person, warnings when a contact's key changes.</li>
+<li>Encrypted backup of your identity, protected by a passphrase (Argon2id).</li>
+<li>Screenshots of decrypted text blocked by default.</li>
+</ul>
+
+<b>What it does not protect against</b>
+<ul>
+<li>A compromised phone (root, malware, accessibility services that read the screen).</li>
+<li>Metadata: the chat app still sees who talks to whom and when.</li>
+<li>The fact that you are encrypting: encrypted messages are recognisable.</li>
+</ul>
+
+The design, threat model and protocol specification are public in the <a href="https://github.com/muzif98/musyboard-core">core repository</a>. The cryptography has not yet had an external audit.
+
+Not affiliated with or endorsed by the HeliBoard developers.

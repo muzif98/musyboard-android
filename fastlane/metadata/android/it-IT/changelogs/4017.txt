@@ -1,0 +1,1 @@
+• Un messaggio non inviato non ti segue più in silenzio in un'altra chat della stessa app. Ti viene chiesto se usarlo lì (confermando a chi va) o cancellarlo; finché non scegli, non si può cifrare.

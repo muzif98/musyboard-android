@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    keyboard-cipher: the decrypted message bubble.
+
+    The solid colour here is only a placeholder: CipherPanel tints it with the
+    active theme's key colour, since HeliBoard has dozens of themes.
+
+    Equal corners on all four sides, no tail: a tail points to one side, which
+    depends on the writing direction, and shape drawables know nothing about
+    start/end. A rounded rectangle not spanning the full width still reads as a
+    bubble.-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="18dp" />
+    <solid android:color="#FFFFFF" />
+</shape>

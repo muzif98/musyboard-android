@@ -1,0 +1,26 @@
+*.iml
+.idea
+.gradle
+.kotlin
+local.properties
+.DS_Store
+Gemfile
+build
+app/build
+app/release
+app/.cxx
+app/.attach_*
+fastlane/Appfile
+tools/*.txt
+*.patch
+*.diff
+*.sh
+
+# keyboard-cipher: .so files produced by cargo-ndk, not sources
+/app/src/main/jniLibs/
+
+# keyboard-cipher: release signing key. It must never enter the repository in
+# any form: whoever has it can sign updates that phones accept as yours.
+keystore.properties
+*.jks
+*.keystore

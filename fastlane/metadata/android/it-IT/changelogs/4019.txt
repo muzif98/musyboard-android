@@ -1,0 +1,5 @@
+• "Usalo qui" su un messaggio non inviato non chiede più all'infinito: una volta accettato, il messaggio resta usabile in quel campo.
+• "Invia in chiaro" chiede conferma la prima volta e dopo ogni messaggio cifrato inviato o letto.
+• Backup dell'identità: all'export la passphrase va scritta due volte, e se l'import non riesce ora dice perché.
+• Se il telefono ferma la tastiera per risparmiare batteria, l'app te lo dice e ti aiuta a riattivarla.
+• Mandare la propria chiave con la pressione lunga sul lucchetto ora richiede una pressione un po' più lunga.

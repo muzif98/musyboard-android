@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (C) 2014 The Android Open Source Project
+    modified
+    SPDX-License-Identifier: Apache-2.0 AND GPL-3.0-only
+-->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:orientation="vertical" >
+
+    <!--
+        keyboard-cipher: the compose row. Plaintext is typed here and the app
+        only receives the blob.
+
+        `gone` by default: with the mode off it must not cost a pixel of height.
+
+        FIXED height: growing while typing made the keyboard grow, and the chat
+        app does not always relayout in time, so the row ended up covering the
+        app's text box. Longer text scrolls, and scrolling follows the cursor.-->
+    <LinearLayout
+        android:id="@+id/cipher_compose_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/cipher_compose_row_height"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <!--
+            Top: the text and the two most used keys, send in clear and send
+            encrypted. They are HERE and not only in the toolbar because the
+            toolbar disappears when emoji or clipboard history are open.
+
+            Larger than other keys because they are used constantly, and here
+            they do not take width from suggestions.-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <helium314.keyboard.cipher.CipherComposeView
+                android:id="@+id/cipher_compose_row"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:paddingStart="12dp"
+                android:paddingEnd="8dp"
+                android:textSize="16sp"
+                android:hint="@string/cipher_compose_hint"
+                android:textDirection="locale"
+                android:scrollbars="vertical"
+                android:fadeScrollbars="false"
+                android:requiresFadingEdge="vertical"
+                android:fadingEdgeLength="12dp" />
+
+            <ImageButton
+                android:id="@+id/cipher_compose_send"
+                android:layout_width="44dp"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                android:scaleType="fitCenter"
+                android:background="?android:attr/selectableItemBackground"
+                android:src="@drawable/ic_cipher_encrypt"
+                android:contentDescription="@string/cipher_encrypt_action" />
+
+            <ImageButton
+                android:id="@+id/cipher_compose_plain"
+                android:layout_width="44dp"
+                android:layout_height="match_parent"
+                android:paddingStart="6dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:scaleType="fitCenter"
+                android:background="?android:attr/selectableItemBackground"
+                android:src="@drawable/ic_cipher_plain"
+                android:contentDescription="@string/cipher_send_plain_action" />
+        </LinearLayout>
+
+        <!--
+            Bottom: whom you are encrypting for. Tap to change.
+
+            The one thing the user cannot know before pressing the lock (the
+            keyboard does not know whom you are talking to), and an invisible
+            choice is a surprising one. On its own line, under the keys, because
+            it is a state, not an action.-->
+        <TextView
+            android:id="@+id/cipher_recipient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|end"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="2dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textSize="12sp" />
+        <!--
+            In place of the recipient, when the row holds an unsent message and a
+            new field of the same app was just entered: it may be another chat.
+            See CipherCompose.inSospeso.-->
+        <LinearLayout
+            android:id="@+id/cipher_pending"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/cipher_pending_label"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:paddingStart="12dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="12sp"
+                android:text="@string/cipher_pending_title" />
+            <TextView
+                android:id="@+id/cipher_pending_use"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:text="@string/cipher_pending_use" />
+            <TextView
+                android:id="@+id/cipher_pending_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:text="@string/cipher_pending_delete" />
+        </LinearLayout>
+        <!--
+            In place of the recipient, when about to send in clear after
+            encrypting or decrypting. See CipherCompose.chiediPrimaDelChiaro.-->
+        <LinearLayout
+            android:id="@+id/cipher_plain_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/cipher_plain_label"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:paddingStart="12dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="12sp"
+                android:text="@string/cipher_plain_confirm_title" />
+            <TextView
+                android:id="@+id/cipher_plain_yes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:text="@string/cipher_plain_yes" />
+            <TextView
+                android:id="@+id/cipher_plain_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:text="@string/cipher_plain_no" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <include
+        android:id="@+id/strip_container"
+        layout="@layout/strip_container" />
+
+    <!-- To ensure that key preview popup is correctly placed when the current system locale is
+         one of RTL locales, layoutDirection="ltr" is needed in the SDK version 17+. -->
+    <helium314.keyboard.latin.KeyboardWrapperView
+        android:id="@+id/keyboard_view_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layoutDirection="ltr" >
+
+        <helium314.keyboard.keyboard.MainKeyboardView
+            android:id="@+id/keyboard_view"
+            android:layoutDirection="ltr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <include
+            android:id="@+id/emoji_palettes_view"
+            layout="@layout/emoji_palettes_view" />
+        <include
+            android:id="@+id/clipboard_history_view"
+            layout="@layout/clipboard_history_view" />
+
+        <!-- keyboard-cipher: the selection drop-down menu. It overlays the
+             keys and takes no height of its own.-->
+        <include layout="@layout/cipher_selection_menu" />
+
+        <!-- keyboard-cipher: the decrypted message, inside the keyboard.
+             See CipherPanel.-->
+        <include layout="@layout/cipher_message_panel" />
+
+        <ImageButton
+            android:id="@+id/btn_stop_one_handed_mode"
+            android:contentDescription="@string/label_stop_onehanded_mode_key"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            style="?attr/suggestionWordStyle" />
+
+        <ImageButton
+            android:id="@+id/btn_switch_one_handed_mode"
+            android:contentDescription="@string/label_switch_onehanded_key"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            style="?attr/suggestionWordStyle" />
+
+        <ImageButton
+            android:id="@+id/btn_resize_one_handed_mode"
+            android:contentDescription="@string/label_resize_onehanded_key"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            style="?attr/suggestionWordStyle" />
+
+        <ImageView
+            android:id="@+id/backgroundGatheringIndicator"
+            android:visibility="visible"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/btn_keyboard_key_action_normal_lxx_base"
+            android:tint="#a00000"
+            android:layout_gravity="top"
+            />
+    </helium314.keyboard.latin.KeyboardWrapperView>
+    <LinearLayout
+        android:id="@+id/float_handle_container"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/resize_handle"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/config_floating_handle_height"
+            android:src="@drawable/ic_arrow_horizontal"/>
+        <ImageView
+            android:id="@+id/drag_handle"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/config_floating_handle_height"
+            android:src="@drawable/ic_drag_indicator"/>
+    </LinearLayout>
+</LinearLayout>

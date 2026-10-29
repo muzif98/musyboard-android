@@ -1,0 +1,5 @@
+• "Use here" on an unsent message no longer asks again and again: once accepted, the message stays usable in that field.
+• "Send unencrypted" asks for confirmation the first time and after every encrypted message sent or read.
+• Identity backup: the passphrase must be typed twice when exporting, and a failed import now says why.
+• If the phone stops the keyboard to save battery, the app tells you and helps you turn it back on.
+• Sending your own key with a long press on the lock now takes a slightly longer press.

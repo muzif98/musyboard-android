@@ -1,0 +1,4 @@
+• «Invia in chiaro» non raddoppia più il messaggio quando il campo dell'app contiene già del testo.
+• Se un invio non riesce, il campo torna esattamente com'era.
+• Aprire un messaggio copiato non fa più dimenticare alla tastiera in quale app eri.
+• Il log di debug resta spento finché la cifratura è attiva.

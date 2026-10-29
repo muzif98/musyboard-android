@@ -1,0 +1,34 @@
+MusyBoard è una tastiera che cifra quello che scrivi <b>dentro la tastiera</b>, prima che il testo arrivi all'app di chat. WhatsApp, Telegram, gli SMS o qualunque altra app ricevono solo il messaggio cifrato; il testo in chiaro non ci entra mai.
+
+È un fork di <a href="https://github.com/Helium314/HeliBoard">HeliBoard</a>, quindi è anche una tastiera completa e rispettosa della privacy: layout per molte lingue, suggerimenti, gesti, temi. Come HeliBoard, <b>non ha il permesso di accesso a internet</b>.
+
+<b>Come funziona</b>
+<ul>
+<li>Scrivi in una riga dentro la tastiera. Il campo dell'app resta vuoto.</li>
+<li>Premi il lucchetto: il messaggio viene cifrato per la persona a cui scrivi e messo nel campo, pronto da inviare.</li>
+<li>L'altra persona copia il messaggio (o lo seleziona e sceglie «Decifra»), e la sua tastiera lo mostra in una finestra protetta.</li>
+<li>La prima volta vi scambiate una breve presentazione, oppure inquadrate un codice QR di persona per essere sicuri che nessuno sia in mezzo.</li>
+</ul>
+
+<b>Funzioni</b>
+<ul>
+<li>Crittografia moderna: X25519, XChaCha20-Poly1305, HKDF-SHA-256, in un piccolo core open source in Rust.</li>
+<li>Forward secrecy (accesa di default): chi in futuro prende il tuo telefono e le tue chiavi non riapre i messaggi passati.</li>
+<li>In alternativa, una conversazione rileggibile che puoi «bruciare» per entrambi.</li>
+<li>Foto, video e file cifrati, mandati come allegati.</li>
+<li>Messaggi di gruppo, con avvisi chiari su cosa un gruppo non può garantire.</li>
+<li>Impronte dei contatti da confrontare di persona, avvisi quando la chiave di un contatto cambia.</li>
+<li>Backup cifrato della tua identità, protetto da una passphrase (Argon2id).</li>
+<li>Screenshot del testo decifrato bloccati di default.</li>
+</ul>
+
+<b>Da cosa non protegge</b>
+<ul>
+<li>Un telefono compromesso (root, malware, servizi di accessibilità che leggono lo schermo).</li>
+<li>I metadati: l'app di chat vede comunque chi parla con chi e quando.</li>
+<li>Il fatto stesso che stai cifrando: i messaggi cifrati sono riconoscibili.</li>
+</ul>
+
+Il progetto, il modello delle minacce e la specifica del protocollo sono pubblici nel <a href="https://github.com/muzif98/musyboard-core">repository del core</a>. La crittografia non ha ancora avuto un audit esterno.
+
+Non affiliato né approvato dagli sviluppatori di HeliBoard.

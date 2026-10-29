@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    In landscape the screen is short and the keyboard already takes much of it,
+    so the compose row shrinks. Content is not lost, it scrolls.
+
+    58dp: forty for the text with keys, the rest for the recipient line. Still
+    less than the 74 of portrait.-->
+<resources>
+    <dimen name="cipher_compose_row_height">58dp</dimen>
+</resources>

@@ -1,0 +1,4 @@
+First release signed with MusyBoard's own key.
+• New app ID: it installs next to earlier test versions. Move your identity with Contacts → backup → export, then import it here.
+• The encryption part of the keyboard is now in English (Italian stays for Italian phones).
+• "Send as plain text" no longer duplicates the message.

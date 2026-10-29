@@ -1,0 +1,1 @@
+• Correzione del build perché F-Droid possa compilare l'app (nessuna novità per chi la usa).

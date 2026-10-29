@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    keyboard-cipher resources.
+    Kept in a separate file so they do not mix with HeliBoard's: it makes the
+    fork's parts obvious when merging from upstream.
+
+    Texts here are in ENGLISH, the default language: phones set to an
+    untranslated language read these. Italian is in values-it/cipher.xml.
+    Whoever adds a string adds it to both.-->
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!--
+        Label of the entry in the text selection toolbar (ACTION_PROCESS_TEXT)
+        and in the share sheet. Seen inside another app, so it must be short and
+        self-explanatory.
+
+        tools:ignore="MissingTranslation": HeliBoard's translations come from
+        Weblate, and the fork's strings do not go through it. Without this, lint
+        reports an error for each of the project's 85 languages.-->
+    <string name="cipher_decrypt_action" tools:ignore="MissingTranslation">Decrypt</string>
+
+    <!--
+        Labels of the two toolbar keys.
+
+        The names are NOT free: `createToolbarKey` builds the contentDescription
+        from `key.name.lowercase()`, so they must match the ToolbarKey entries.
+        Otherwise TalkBack would read the raw string "encrypt".-->
+    <string name="encrypt" tools:ignore="MissingTranslation">Encrypt</string>
+    <string name="decrypt" tools:ignore="MissingTranslation">Decrypt</string>
+    <string name="attach" tools:ignore="MissingTranslation">Send an encrypted file</string>
+    <string name="gallery" tools:ignore="MissingTranslation">Send an encrypted photo or video</string>
+    <string name="contacts" tools:ignore="MissingTranslation">Encrypted contacts</string>
+
+    <!-- Messages of the two gestures. See CipherActions. -->
+    <string name="cipher_nothing_to_encrypt" tools:ignore="MissingTranslation">Nothing to encrypt</string>
+    <string name="cipher_nothing_to_decrypt" tools:ignore="MissingTranslation">Nothing to decrypt</string>
+    <!--
+        Not "error": the core does not know whom you are talking to and does
+        not guess. Encrypting for the wrong person would be the worst possible
+        failure, so the user is asked.-->
+    <string name="cipher_no_recipient" tools:ignore="MissingTranslation">Choose a recipient for this app first</string>
+    <string name="cipher_part_ready" tools:ignore="MissingTranslation">Part %1$d of %2$d is in the field: send it, the next one follows by itself</string>
+    <string name="cipher_part_failed" tools:ignore="MissingTranslation">This part did not fit in the field and the following ones were cancelled: send what went out, then write the rest again</string>
+    <string name="cipher_plain_too_long" tools:ignore="MissingTranslation">This chat accepts at most %1$d characters: the text is still in the row, shorten it and try again</string>
+    <string name="cipher_field_limit_learned" tools:ignore="MissingTranslation">This chat accepts at most %1$d characters: the message did not fit, and from now on it is split into parts here</string>
+    <string name="cipher_message_too_long" tools:ignore="MissingTranslation">Message too long for this chat</string>
+    <string name="cipher_message_too_long_detail" tools:ignore="MissingTranslation">The encrypted text is over Telegram\'s 4096-character limit: remove about %1$d characters, or send it as two messages.</string>
+    <string name="cipher_text_too_long" tools:ignore="MissingTranslation">Text too long to encrypt</string>
+    <!-- Compose row: plaintext stays in the keyboard until the lock key. -->
+    <string name="cipher_settings_category" tools:ignore="MissingTranslation">Encryption</string>
+    <string name="cipher_compose_mode" tools:ignore="MissingTranslation">Write inside the keyboard</string>
+    <string name="cipher_compose_mode_summary" tools:ignore="MissingTranslation">The plain text stays in the keyboard and the app only receives the encrypted message, when you press the lock. Without this, the plain text goes through the app\'s field, which may save it as a draft before you even encrypt.</string>
+    <string name="cipher_enabled" tools:ignore="MissingTranslation">Encryption on</string>
+    <string name="cipher_enabled_summary" tools:ignore="MissingTranslation">When off, the keyboard behaves like a normal keyboard: no encryption keys, no compose row. Your keys and contacts stay where they are.</string>
+    <string name="cipher_nothing_to_send" tools:ignore="MissingTranslation">Nothing to send</string>
+    <string name="cipher_sent_plain" tools:ignore="MissingTranslation">Put in the field as plain text, not encrypted</string>
+    <!--
+        Key description for TalkBack. The name comes from the enum entry in
+        lowercase, so this string must be named this way.-->
+    <string name="send_plain" tools:ignore="MissingTranslation">Deliver as plain text</string>
+    <!--
+        FIXED row height, not `wrap_content`.
+
+        Growing while typing made the keyboard grow, and the chat app does not
+        always relayout in time: the row ended up covering the app's text box. A
+        constant height removes the whole class of problem; longer text scrolls,
+        following the cursor.-->
+    <dimen name="cipher_compose_row_height">74dp</dimen>
+    <!-- Key name for TalkBack: must match the enum entry. -->
+    <string name="compose" tools:ignore="MissingTranslation">Write inside the keyboard</string>
+    <string name="cipher_compose_on" tools:ignore="MissingTranslation">You are now writing inside the keyboard: the app will only see the encrypted message</string>
+    <!--
+        Turning the row off also hides the lock keys, and it must be said here:
+        otherwise users look for them in the toolbar settings, where they still
+        are.-->
+    <string name="cipher_compose_off" tools:ignore="MissingTranslation">You are now writing in the app\'s field, like a normal keyboard. No encryption until you turn it back on from here.</string>
+    <string name="cipher_auto_send" tools:ignore="MissingTranslation">Send right away</string>
+    <string name="cipher_auto_send_summary" tools:ignore="MissingTranslation">After encrypting, ask the app to send the message: one tap instead of two. It only works where the text field has a send action; in Telegram, turn on “Send with Enter” in the chat settings.</string>
+    <string name="cipher_send_unavailable" tools:ignore="MissingTranslation">Message ready in the field: this app does not let the keyboard send it, press send yourself</string>
+    <!-- Encrypted files (decision G). -->
+    <string name="cipher_file_send" tools:ignore="MissingTranslation">Send an encrypted file</string>
+    <!--
+        Title of the list when reached from the attachment key. It says a PERSON
+        is being chosen, not the contact list being opened: the file comes after.-->
+    <string name="cipher_file_pick_recipient" tools:ignore="MissingTranslation">Who are you sending the file to?</string>
+    <string name="cipher_media_pick_recipient" tools:ignore="MissingTranslation">Who are you sending the photo to?</string>
+    <string name="cipher_file_too_big" tools:ignore="MissingTranslation">File too big: on this phone the limit is %1$d MB</string>
+    <string name="cipher_file_detail" tools:ignore="MissingTranslation">%1$s — %2$d KB</string>
+    <string name="cipher_file_received" tools:ignore="MissingTranslation">Encrypted file</string>
+    <string name="cipher_file_save" tools:ignore="MissingTranslation">Save</string>
+    <string name="cipher_file_saved" tools:ignore="MissingTranslation">Saved. From now on it is a file like any other: it shows up in the gallery and in backups.</string>
+    <string name="cipher_pick_recipient" tools:ignore="MissingTranslation">Who are you writing to?</string>
+    <string name="cipher_pick_no_contacts" tools:ignore="MissingTranslation">No contacts yet. Ask someone for their introduction, or send them yours: long-press the closed lock and send.</string>
+    <string name="cipher_no_recipient_short" tools:ignore="MissingTranslation">→ to whom?</string>
+    <!--
+        Attribution, in About. Not politeness: the actual keyboard (layouts,
+        correction, gestures, themes, dictionaries) is HeliBoard's work, and only
+        encryption is added on top. It must be said where it is read.-->
+    <string name="about_upstream" tools:ignore="MissingTranslation">Based on HeliBoard</string>
+    <string name="about_upstream_description" tools:ignore="MissingTranslation">The keyboard is theirs: layouts, correction, gestures, themes, dictionaries. This fork adds encryption on top. It is not endorsed or supported by the HeliBoard developers, and problems with this version should not be reported to them.</string>
+    <!--
+        Copy and cut from the compose row. The message gives the reason, not just
+        the ban: pressing copy is reasonable, and an unexplained "not allowed"
+        looks like a bug.-->
+    <string name="cipher_no_copy_plain" tools:ignore="MissingTranslation">Plain text is not copied: the chat app could read it from the clipboard. Encrypt first.</string>
+    <!--
+        The summary states the reason and the price, like the other switches:
+        whoever turns it off must know what it opens, not only what they gain.-->
+    <string name="cipher_block_copy" tools:ignore="MissingTranslation">Don\'t copy plain text</string>
+    <string name="cipher_block_copy_summary" tools:ignore="MissingTranslation">Copy and cut do not work while you are writing in the keyboard\'s row. Text on the clipboard can be read by the chat app that has focus, and it stays in the phone\'s clipboard history: the same hole that writing inside the keyboard is meant to close. Turn it off and you can copy, but what you copy leaves the keyboard.</string>
+    <string name="cipher_block_screenshot" tools:ignore="MissingTranslation">Block screenshots</string>
+    <string name="cipher_block_screenshot_summary" tools:ignore="MissingTranslation">Prevents screenshots, screen recording and the thumbnail Android saves for the Recents screen, on everything that shows decrypted text. When off, the system saves an image of the plain-text message to disk for the recent apps list, and any app that records the screen can see it. Turn it off only if you really need a screenshot.</string>
+    <string name="cipher_auto_open" tools:ignore="MissingTranslation">Open copied messages automatically</string>
+    <string name="cipher_auto_open_summary" tools:ignore="MissingTranslation">When you copy an encrypted message, the keyboard opens it without you pressing anything, even if the keyboard is not on screen. Two things to know, because when it does not work the reason is always one of these. Clipboard history must be on: that is where the text is already read, and reading it on our own initiative would turn the keyboard into an app that spies on the clipboard. And the keyboard must be running: if the phone\'s battery manager stops it, copying does nothing. In that case use the selection: long-press the message and choose “Decrypt”. That path works even when the keyboard is stopped, and it is one step less.</string>
+    <!--
+        Entries of the row's drop-down menu. The other four are the system strings,
+        already translated (@android:string/copy and friends, exposed in
+        strings.xml). "Delete" is written here: the matching system string is
+        private and cannot be referenced by an app.-->
+    <string name="cipher_menu_delete" tools:ignore="MissingTranslation">Delete</string>
+    <!--
+        Drop-down entry. Comfortable finger height (48dp is the recommended
+        minimum touch target); the colour is set in `CipherCompose.bind` from the
+        palette, no colour is written here.-->
+    <style name="CipherMenuItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:minWidth">180dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+    </style>
+    <!--
+        The keyring was not written to disk.
+
+        Two messages rather than one, because the consequences differ. Before the
+        message leaves it can still be cancelled, and it is; after the pin or label
+        already changed in memory it cannot, and the honest thing is to warn they
+        may not survive a restart.
+
+        A silent failure here is the worst: with forward secrecy on it means
+        sending a message whose reply will never open, and for a sender just pinned
+        it reopens the MITM window after a restart.-->
+    <string name="cipher_keyring_not_saved" tools:ignore="MissingTranslation">The keys could not be saved: this change may be gone after the next restart. Check the free space on the phone.</string>
+    <string name="cipher_keyring_not_saved_send" tools:ignore="MissingTranslation">Not sent: the keys for this message could not be saved, and without them the reply might not open. Check the free space and try again.</string>
+    <!--
+        Not "file too large" for every failure: the size limit is already checked
+        earlier, with its own message.-->
+    <string name="cipher_file_not_prepared" tools:ignore="MissingTranslation">The encrypted attachment could not be prepared.</string>
+    <!--
+        The two entries about "the keyboard gets stopped and copying no longer does
+        anything". Next to each other because they answer the same problem, and the
+        order matters: the free one first.-->
+    <!--
+        The fallback notification, when the system refuses to open the screen.
+        Fixed text with no content: the status bar has none of the protections of
+        the window that later shows the message, and anyone looking at the screen
+        can read it.-->
+    <string name="cipher_panel_close" tools:ignore="MissingTranslation">Close</string>
+    <string name="cipher_notif_title" tools:ignore="MissingTranslation">Encrypted message on the clipboard</string>
+    <string name="cipher_notif_text" tools:ignore="MissingTranslation">Tap to read it</string>
+    <string name="cipher_notif_channel" tools:ignore="MissingTranslation">Copied messages</string>
+    <string name="cipher_notif_channel_desc" tools:ignore="MissingTranslation">Tells you when an encrypted message lands on the clipboard and the phone does not let the screen open by itself. Shows nothing of the content.</string>
+    <string name="cipher_battery" tools:ignore="MissingTranslation">Stop the phone from killing the keyboard</string>
+    <string name="cipher_battery_summary" tools:ignore="MissingTranslation">Opens the system battery-saving screen. If the phone stops the keyboard, copying a message no longer does anything (the keyboard is what watches the clipboard), and sometimes you even end up with the system keyboard. Setting MusyBoard to “Unrestricted” makes the problem go away, at no cost.</string>
+    <string name="cipher_battery_ok" tools:ignore="MissingTranslation">Already unrestricted. If the problem comes back, your phone stops it anyway: try keeping it alive below.</string>
+    <string name="cipher_keep_alive" tools:ignore="MissingTranslation">Keep the keyboard alive</string>
+    <string name="cipher_keep_alive_summary" tools:ignore="MissingTranslation">Use this only if removing the battery restriction was not enough. It adds a permanent notification whose only purpose is to stop the phone from killing the keyboard: it is the only thing the most aggressive battery managers respect. The cost is that notification in the status bar and the permission to show it.</string>
+    <string name="cipher_keep_alive_notice" tools:ignore="MissingTranslation">The keyboard stays alive</string>
+    <string name="cipher_keep_alive_notice_text" tools:ignore="MissingTranslation">Only there so the phone does not stop it. It watches nothing and sends nothing.</string>
+    <!--
+        The notification states the STATUS, not a fixed sentence. Keeping the
+        process alive is not enough: the clipboard is readable as default keyboard,
+        and that is lost after a force-stop. Without these lines the notification
+        would reassure while watching nothing.
+
+        The line about the last copy tells apart two failures that look alike:
+        "the listener does not fire" (the line never changes) and "it fires but
+        does not recognise the blob".-->
+    <string name="cipher_keep_alive_not_default" tools:ignore="MissingTranslation">Warning: another keyboard is now the default, so the clipboard cannot be watched. Select MusyBoard again.</string>
+    <string name="cipher_keep_alive_none" tools:ignore="MissingTranslation">No copy seen so far.</string>
+    <string name="cipher_keep_alive_blob" tools:ignore="MissingTranslation">Last copy: encrypted message recognised.</string>
+    <string name="cipher_keep_alive_other" tools:ignore="MissingTranslation">Last copy: not an encrypted message.</string>
+    <string name="cipher_keep_alive_channel" tools:ignore="MissingTranslation">Keyboard always alive</string>
+    <string name="cipher_forward_secrecy" tools:ignore="MissingTranslation">Forward secrecy</string>
+    <string name="cipher_forward_secrecy_summary" tools:ignore="MissingTranslation">Every message carries a new key, and reading a reply throws the old ones away. Someone who took your phone and your key tomorrow could not reopen what you already sent. The price: an old conversation can no longer be reopened, not even by exporting it. The latest messages stay readable for a while, then they close too as the conversation moves on. Turn it off if you need to be able to reread it. The recipient needs this version or newer, and you must already be among their contacts.</string>
+    <!--
+        Same name, a key different from a forgotten one. It accuses nobody: it says
+        there is a contradiction in the user's own records, and that only comparing
+        the fingerprint out of band resolves it.-->
+    <string name="cipher_substitute_title" tools:ignore="MissingTranslation">Another %1$s?</string>
+    <string name="cipher_substitute_warning" tools:ignore="MissingTranslation">You had already called a different key %1$s, and then forgot it. This is another key.\n\nIt can mean two things, and they cannot be told apart from here: they changed phone, or someone else is using that name. The only way to know is to compare the fingerprint with them, in person or over a channel other than this chat.</string>
+    <string name="cipher_substitute_ok" tools:ignore="MissingTranslation">Use this name</string>
+    <string name="cipher_rename" tools:ignore="MissingTranslation">Rename</string>
+    <string name="cipher_forget" tools:ignore="MissingTranslation">Forget this contact</string>
+    <string name="cipher_burn" tools:ignore="MissingTranslation">Burn the conversation</string>
+    <!--
+        BEFORE the normal warning, not after: readers often stop at the first
+        paragraph, and this is the information that changes the decision (there is
+        almost nothing to burn). It does not say "don't": the gesture still clears
+        state and sends the request to the other person.-->
+    <string name="cipher_burn_warning_fs" tools:ignore="MissingTranslation">You have forward secrecy on: most of the messages already exchanged with this person are unrecoverable on their own, because they open only once. There is little to destroy here.</string>
+    <string name="cipher_burn_title" tools:ignore="MissingTranslation">Burn the conversation with %1$s?</string>
+    <string name="cipher_burn_warning" tools:ignore="MissingTranslation">On this phone it is final: the messages exchanged with this person will never open again, not even for you. The contact stays and you can keep writing to each other: the next message starts from scratch.\n\nA request is copied to the clipboard for you to paste to the other person in the chat: if their app honours it, they delete too. It cannot be enforced: anyone who wants to keep the messages can, and the platform has its own copy of the ciphertext anyway.\n\nThe first message you wrote to each other does not burn: when it was sent there was nothing shared yet to destroy.</string>
+    <string name="cipher_burn_done" tools:ignore="MissingTranslation">Burned. The request for the other person is on the clipboard: paste it into the chat.</string>
+    <string name="cipher_burned_incoming" tools:ignore="MissingTranslation">%1$s burned the conversation. It cannot be reread from here either.\n\nRequest written on %2$s: if this date is very old, someone may have pasted an old request again.</string>
+    <string name="cipher_forget_title" tools:ignore="MissingTranslation">Forget %1$s?</string>
+    <string name="cipher_forget_warning" tools:ignore="MissingTranslation">You lose the link between this key and this person. The next message they send will show up as from a never-seen sender and will be stored again without any notice: the same thing you would see if someone were impersonating them. “Compared in person” is lost too.\n\nAbove all: their messages will no longer open. Forgetting also destroys your temporary keys towards them, which are the keys their messages are read with: it is the same property that keeps the past safe, and here you pay for it. Adding them back is not enough, those keys do not come back. To read them again you must write to them first, and it is their reply that will open.</string>
+    <string name="cipher_forgotten" tools:ignore="MissingTranslation">Contact forgotten</string>
+    <string name="cipher_compose_hint" tools:ignore="MissingTranslation">Write here: the app can\'t see it</string>
+    <!--
+        The field could not be replaced: part of the plaintext stayed next to the
+        blob. It must be said, in a way that makes clear what to do before pressing
+        send.-->
+    <string name="cipher_replace_failed" tools:ignore="MissingTranslation">This app did not let the text be replaced: check the field, there may still be plain text in it</string>
+    <!--
+        Delivery from the compose row failed and the message stayed in the row. The
+        message says WHERE the text is, the one thing the user needs so as not to
+        rewrite it.-->
+    <string name="cipher_send_failed_kept" tools:ignore="MissingTranslation">Sending failed: the message is still in the row, try again</string>
+    <!--
+        Says "send", not "done": the card is in the field but has not left, and
+        without sending the first contact is not completed.-->
+    <string name="cipher_card_inserted" tools:ignore="MissingTranslation">Your introduction is in the field: send it so they can recognise you</string>
+    <string name="cipher_locked" tools:ignore="MissingTranslation">Unlock the device to encrypt</string>
+    <string name="cipher_unavailable" tools:ignore="MissingTranslation">Encryption not available</string>
+
+    <!--
+        DecryptActivity screens.
+
+        "not encrypted" is NOT an error: it is the most common outcome, since most
+        text passing through here is not ours.-->
+    <string name="cipher_not_our_blob" tools:ignore="MissingTranslation">This text is not encrypted</string>
+    <!--
+        A stream with a scheme other than content:// is rejected without trying to
+        open it (see DecryptActivity.extractStream). The message says what to do,
+        not why: the user did nothing wrong (a compliant app always sends
+        content://).-->
+    <string name="cipher_uri_rejected" tools:ignore="MissingTranslation">This file can\'t be opened from here. Share it from the chat, or open it from the document picker.</string>
+    <!--
+        A blob from a future version must say "update", not "not encrypted". That
+        is why the version is in the first byte of the body and not in the
+        sentinel.-->
+    <string name="cipher_version_too_new" tools:ignore="MissingTranslation">Message created with a newer version. Update the app.</string>
+    <string name="cipher_tier_unsupported" tools:ignore="MissingTranslation">This message uses a mode that is not supported yet</string>
+    <!--
+        ONE message for any crypto failure. Do not add variants: distinguishing
+        causes is a channel that helps attackers, which is why the core returns an
+        opaque error.-->
+    <!-- Fallback sentence: used only when the envelope shape says nothing more
+         precise (identity card, or unreadable blob). The four below replace it
+         where something true is known. -->
+    <string name="cipher_cannot_decrypt" tools:ignore="MissingTranslation">It doesn\'t open.</string>
+    <!-- Used the chain: here "only once" is a true explanation. -->
+    <string name="cipher_cannot_decrypt_fs" tools:ignore="MissingTranslation">It doesn\'t open. This message used forward secrecy: if you wrote it, it doesn\'t reopen even for you, and that is intended. If you received it and already opened a newer one from the same person, its key was thrown away and does not come back. Otherwise it may be meant for someone else.</string>
+    <string name="cipher_cannot_decrypt_ephemeral" tools:ignore="MissingTranslation">It doesn\'t open. It is the first message of a conversation with forward secrecy on: if you wrote it, it doesn\'t reopen even for you, and that is intended. If you received it, either it is meant for someone else or it arrived damaged.</string>
+    <string name="cipher_cannot_decrypt_epoch" tools:ignore="MissingTranslation">It doesn\'t open. This message did not use forward secrecy, so it is not an expired key: either the conversation was burned, or it is meant for someone else, or it arrived damaged.</string>
+    <!-- Did NOT use the chain: mentioning forward secrecy here would be false. -->
+    <string name="cipher_cannot_decrypt_plain" tools:ignore="MissingTranslation">It doesn\'t open. This message did not use forward secrecy, so it is not an expired key: either it is meant for someone else or it arrived damaged.</string>
+    <!-- Group: neither of the causes above applies. -->
+    <string name="cipher_cannot_decrypt_group" tools:ignore="MissingTranslation">It doesn\'t open. It is a group message: either you are not among the recipients, or it was written with an earlier version of the app (groups changed format, and old ones don\'t reopen).</string>
+    <string name="cipher_cannot_decrypt_burn" tools:ignore="MissingTranslation">It doesn\'t open. It is a request to destroy a conversation, but it does not come from any of your contacts: it was not carried out.</string>
+    <string name="cipher_own_message_to" tools:ignore="MissingTranslation">To %1$s</string>
+    <string name="cipher_own_message_note" tools:ignore="MissingTranslation">You wrote it. It reopens because forward secrecy was off: with it on this would not be possible, not even for you.</string>
+    <string name="cipher_own_message_no_peer" tools:ignore="MissingTranslation">You wrote it, but who it was for can no longer be found: that contact is no longer in your list.</string>
+    <string name="cipher_own_message_key_gone" tools:ignore="MissingTranslation">You wrote it, and it no longer reopens: the key it was encrypted to is gone. This happens when the recipient has forward secrecy on (their keys move forward with every message) or when the conversation was burned. If the contact is still in your list, new messages work as usual: only this one stays closed.</string>
+    <string name="cipher_unknown_sender" tools:ignore="MissingTranslation">Unknown sender</string>
+    <string name="cipher_sender_verified" tools:ignore="MissingTranslation">%1$s ✓</string>
+    <string name="cipher_composed_at" tools:ignore="MissingTranslation">Written on %1$s (according to the sender)</string>
+    <string name="cipher_card_title" tools:ignore="MissingTranslation">New contact</string>
+    <string name="cipher_card_pinned" tools:ignore="MissingTranslation">Key stored. Compare this code in person to be sure it really is them.</string>
+    <string name="cipher_unreadable_title" tools:ignore="MissingTranslation">Unreadable data</string>
+    <string name="cipher_unreadable_identity" tools:ignore="MissingTranslation">Your identity can\'t be decrypted on this device. It has not been changed: until you decide, it stays as it is.</string>
+    <string name="cipher_unreadable_keyring" tools:ignore="MissingTranslation">The contact list can\'t be decrypted. It has not been emptied: until you decide, it stays as it is.</string>
+
+    <!--
+        Copying plaintext. The message says where the text goes, because from then
+        on it is outside the app's perimeter: excluded from the keyboard's history,
+        but readable by any app with focus.-->
+    <string name="cipher_copy" tools:ignore="MissingTranslation">Copy</string>
+    <string name="cipher_copied" tools:ignore="MissingTranslation">Copied. It doesn\'t go into the keyboard\'s history, but it stays on the system clipboard.</string>
+
+    <!--
+        QR code for in-person exchange: the only way to close first-contact MITM.
+        TOFU protects from then on, but that first exchange stays exposed if it
+        happens only over the channel nobody should be able to read.-->
+    <string name="cipher_show_qr" tools:ignore="MissingTranslation">Show the QR code</string>
+    <string name="cipher_qr_hint" tools:ignore="MissingTranslation">Let the person you want to contact scan it, in person. It is the only way to be sure nobody got in the middle of the first exchange.</string>
+
+    <!--
+        Identity backup. The texts must say two things the user cannot deduce: the
+        file's security depends ONLY on the passphrase, and importing replaces the
+        current identity.-->
+    <string name="cipher_backup_export" tools:ignore="MissingTranslation">Save a copy of your identity</string>
+    <string name="cipher_backup_export_hint" tools:ignore="MissingTranslation">Choose a passphrase. The file will be protected ONLY by it: if it is weak, so is the backup. If you forget it, the file can never be opened again: there is no way to recover it.</string>
+    <string name="cipher_backup_import" tools:ignore="MissingTranslation">Restore from a copy</string>
+    <string name="cipher_backup_import_hint" tools:ignore="MissingTranslation">Enter the passphrase you protected the file with.</string>
+    <string name="cipher_backup_import_conferma" tools:ignore="MissingTranslation">This replaces your current identity with the one in the file.\n\n• Your current identity will no longer be recoverable, unless you have another copy of it.\n• Messages received so far may no longer be readable.\n• Your contacts will see the key from the file, not the current one.</string>
+    <string name="cipher_backup_import_procedi" tools:ignore="MissingTranslation">Replace identity</string>
+    <string name="cipher_backup_passphrase_vuota" tools:ignore="MissingTranslation">A passphrase is required</string>
+    <string name="cipher_backup_esportato" tools:ignore="MissingTranslation">Copy saved. Keep it somewhere safe: whoever has the file and the passphrase has your identity.</string>
+    <string name="cipher_backup_importato" tools:ignore="MissingTranslation">Identity restored</string>
+    <!--
+        ONE message for wrong passphrase and tampered file. Distinguishing them
+        would tell a guesser when they got it right.-->
+    <string name="cipher_backup_ripeti" tools:ignore="MissingTranslation">Repeat the passphrase</string>
+    <string name="cipher_backup_non_coincidono" tools:ignore="MissingTranslation">The two passphrases don\'t match</string>
+    <string name="cipher_backup_illeggibile" tools:ignore="MissingTranslation">The file can\'t be read: save it to Downloads and try again from there</string>
+    <string name="cipher_backup_passphrase_errata" tools:ignore="MissingTranslation">Wrong passphrase, or the file was modified</string>
+    <string name="cipher_backup_non_valido" tools:ignore="MissingTranslation">This file is not a MusyBoard backup, or it is incomplete</string>
+    <string name="cipher_backup_versione" tools:ignore="MissingTranslation">This backup was made by a newer MusyBoard: update the app</string>
+    <string name="cipher_backup_contenuto" tools:ignore="MissingTranslation">The backup opened, but the contacts inside it can\'t be read</string>
+    <string name="cipher_backup_keystore" tools:ignore="MissingTranslation">The phone\'s Keystore refused the key: identity not imported</string>
+    <string name="cipher_backup_storage" tools:ignore="MissingTranslation">The identity could not be saved: is storage full? Nothing was imported</string>
+    <string name="cipher_backup_errore_codice" tools:ignore="MissingTranslation">Unexpected import error (code %d)</string>
+
+    <!--
+        Identity card already known: do NOT say "new contact" and do NOT show the
+        verification mark. That mark means "compared in person", the system's only
+        anti-MITM signal.-->
+    <string name="cipher_card_known" tools:ignore="MissingTranslation">Contact already known</string>
+    <string name="cipher_card_known_hint" tools:ignore="MissingTranslation">This key was already stored. If you haven\'t yet, compare the code in person.</string>
+    <!--
+        The explicit gesture an identity card does not perform for the user: it is
+        not authenticated, so it cannot decide whom to encrypt for.-->
+    <string name="cipher_use_as_recipient" tools:ignore="MissingTranslation">Write to this contact</string>
+    <string name="cipher_recipient_set" tools:ignore="MissingTranslation">In this app you now encrypt for this contact</string>
+
+    <!-- ContactsActivity. -->
+    <string name="cipher_my_identity" tools:ignore="MissingTranslation">Your identity</string>
+    <string name="cipher_my_identity_hint" tools:ignore="MissingTranslation">This code identifies you. Read it out to the person you want to contact: if it matches, nobody got in between.</string>
+    <string name="cipher_contacts" tools:ignore="MissingTranslation">Contacts</string>
+    <string name="cipher_no_contacts" tools:ignore="MissingTranslation">No contacts. One will appear as soon as you receive an encrypted message or an introduction.</string>
+    <string name="cipher_unnamed_peer" tools:ignore="MissingTranslation">Unnamed</string>
+    <string name="cipher_first_seen" tools:ignore="MissingTranslation">First seen on %1$s</string>
+    <string name="cipher_peer_detail" tools:ignore="MissingTranslation">%1$s</string>
+    <string name="cipher_assign_label" tools:ignore="MissingTranslation">Give a name</string>
+    <!--
+        The name is LOCAL: it stays on this phone and does not travel with
+        messages. Saying so avoids users thinking they rename someone on the other
+        side too.-->
+    <string name="cipher_assign_label_hint" tools:ignore="MissingTranslation">The name stays on this phone and lets you notice if the key ever changes.</string>
+    <string name="cipher_mark_verified" tools:ignore="MissingTranslation">I compared it in person</string>
+    <string name="cipher_mark_verified_body" tools:ignore="MissingTranslation">Confirm only if you compared this code in person or on a call where you recognise the voice:\n\n%1$s</string>
+
+    <!--
+        Label conflict: Signal's "safety number changed". BOTH fingerprints are
+        shown and both readings explained without picking one. Do not change the
+        tone: the harmless and the dangerous reading must stay on equal footing,
+        since nobody here can know which is true.-->
+    <string name="cipher_conflict_title" tools:ignore="MissingTranslation">This name already belongs to another key</string>
+    <string name="cipher_conflict_body" tools:ignore="MissingTranslation">\"%1$s\" is already linked to this key:\n\n%2$s\n\nThe one you are naming is different:\n\n%3$s\n\nIt can mean two things: they reinstalled the app or changed phone, or someone is getting in between. There is no way to tell them apart from here: ask them over another channel.\n\nNothing has been changed for now.</string>
+    <string name="cipher_conflict_keep" tools:ignore="MissingTranslation">Don\'t change anything</string>
+    <string name="cipher_conflict_replace" tools:ignore="MissingTranslation">It\'s their new key</string>
+    <string name="cipher_key_replaced" tools:ignore="MissingTranslation">Name moved to the new key. It must be compared in person again.</string>
+
+    <!--
+        Identity reset. All three consequences go in the text: it is data
+        destruction, and the button that performs it is the negative one on
+        purpose.-->
+    <string name="cipher_reset_identity" tools:ignore="MissingTranslation">Start over</string>
+    <string name="cipher_reset_identity_body" tools:ignore="MissingTranslation">Generates a new identity and throws away the current one.\n\n• The old identity cannot be recovered.\n• Messages already received will no longer be readable.\n• Every contact of yours will see that your key changed: the same signal that indicates an attempt to impersonate you.\n\nDo it only if there is no other way.</string>
+    <string name="cipher_reset_identity_confirm" tools:ignore="MissingTranslation">Throw away and start over</string>
+
+    <!--
+        The dialog theme that wrapped the plaintext screens is gone: the Compose
+        dialog draws its own frame, and those activities use a transparent window.-->
+    <!--
+        The title says what it does, the summary states the price. The switch is
+        off by default, so the title describes learning, not the ban: a switch
+        called "don't learn" that must be turned on to NOT learn is a confusing
+        double negative.-->
+    <string name="cipher_learn" tools:ignore="MissingTranslation">Learn from encrypted words</string>
+    <string name="cipher_learn_summary" tools:ignore="MissingTranslation">Also improves suggestions with what you write in the encrypted row. When off (recommended) those words don\'t enter the personal dictionary, which ends up in Android\'s backup and shows up as suggestions in other apps</string>
+    <!--
+        Says first WHAT it is (the surprising information), then that nothing
+        happened, otherwise the user wonders whether the contact was added anyway.
+        The fingerprint is there as a chance to recognise one's own.-->
+    <string name="cipher_own_card" tools:ignore="MissingTranslation">This is YOUR key (%1$s), not a contact\'s. Nothing was added to your contacts.</string>
+    <!--
+        The system recreated the activity and the message is not processed again:
+        that would have real effects (chain, pin, burn). It says what to do, not
+        why: the user did nothing wrong.-->
+    <string name="cipher_reopen_needed" tools:ignore="MissingTranslation">Open the message again to read it</string>
+    <!--
+        The burn happened but the request to paste is missing. It first says what
+        DID happen (the irreversible part), then what is missing; the reverse order
+        would read as a failure.-->
+    <string name="cipher_burn_done_no_request" tools:ignore="MissingTranslation">Burned on this phone. The request for the other person could not be prepared: on their side the messages remain.</string>
+    <!--
+        The user asked for the row on a field the automatic classification does not
+        consider a message field. It says it is done and that it is temporary: the
+        override applies to this field and drops when changing field.-->
+    <string name="cipher_compose_forced" tools:ignore="MissingTranslation">Row turned on here too. It goes back to automatic when you change field</string>
+    <!--
+        The one remaining refusal. It gives the REASON, not just no: it is the only
+        case where the key does not do what the user asked, and without a reason it
+        would look broken.-->
+    <string name="cipher_compose_password" tools:ignore="MissingTranslation">The row does not appear here: it is a password field, and it would show on screen what the field hides</string>
+    <!--
+        The clipboard claims to hold text but reading returns nothing. A different
+        case from "clipboard empty", and said differently: the user KNOWS they
+        copied something.-->
+    <string name="cipher_clipboard_unreadable" tools:ignore="MissingTranslation">I can\'t read the clipboard. Try pasting the message into the text field and press again</string>
+    <!-- Description for TalkBack users: the key is a silent icon. -->
+    <string name="cipher_encrypt_action" tools:ignore="MissingTranslation">Encrypt and send</string>
+    <!-- Description for TalkBack users: the key is a silent icon. -->
+    <string name="cipher_send_plain_action" tools:ignore="MissingTranslation">Send as plain text</string>
+    <!--
+        Encryption turned on by itself after reading a message. Said once and never
+        again, and it says WHY, otherwise the switch seems to move by itself.-->
+    <string name="cipher_on_after_read" tools:ignore="MissingTranslation">Encryption on: you just read an encrypted message, so you can reply the same way</string>
+    <!--
+        Group encryption failed. The possible causes are few and actionable (a
+        member is no longer a contact, or there are too many), so it says where to
+        look.-->
+    <string name="cipher_group_failed" tools:ignore="MissingTranslation">Can\'t encrypt for this group</string>
+    <!-- A distinct cause: a member of the saved group was forgotten afterwards.
+         Said only when it is true, since the JNI bridge now reports the reason. -->
+    <string name="cipher_group_member_gone" tools:ignore="MissingTranslation">A member of this group is no longer among your contacts: open it and remove whoever is missing</string>
+    <!-- A group message was read that matches no saved group, or more than
+         one. Nothing is chosen or guessed: the user is told. -->
+    <string name="cipher_group_unknown" tools:ignore="MissingTranslation">Group not found among the saved ones: the recipient has not changed</string>
+    <!-- The microphone opens ANOTHER keyboard, which writes straight into the
+         app's field: dictation would go out in clear. It cannot be redirected. -->
+    <string name="cipher_voice_blocked" tools:ignore="MissingTranslation">Voice typing would write plain text into the app: turn off the encrypted row if you want to use it</string>
+    <!--
+        The recipient when it is a group. The number is there on purpose: a group
+        name alone does not say how many people you are about to send to.-->
+    <string name="cipher_recipient_group" tools:ignore="MissingTranslation">%1$s (%2$d)</string>
+    <!--
+        A message from a group. It states the number and the price: a group message
+        has NO forward secrecy, and the UI must say so.-->
+    <string name="cipher_group_message" tools:ignore="MissingTranslation">%1$d people could read it. In a group it can\'t be established who wrote it, and messages stay readable if someone loses their phone</string>
+    <!--
+        Header of a group message. There is NO name, a condition of decision K6:
+        the text is encrypted with a key every member has, so any member could have
+        rewritten it keeping the original slots. A name next to rewritable text is
+        worse than none: an invented guarantee.-->
+    <string name="cipher_group_header" tools:ignore="MissingTranslation">Group message</string>
+    <string name="cipher_group_new" tools:ignore="MissingTranslation">+ Write to several people</string>
+    <string name="cipher_group_forget" tools:ignore="MissingTranslation">Delete</string>
+    <string name="cipher_group_save" tools:ignore="MissingTranslation">Next</string>
+    <!--
+        It states the minimum: two people. Below that it is not a group but a single
+        recipient, chosen with one tap on the previous screen.-->
+    <string name="cipher_group_pick_members" tools:ignore="MissingTranslation">Tap the people who should be able to read. At least two.</string>
+    <string name="cipher_group_name_title" tools:ignore="MissingTranslation">What is this group called?</string>
+    <!--
+        The name stays on this phone, and it must be said: whoever chooses it might
+        think others see it.-->
+    <string name="cipher_group_name_hint" tools:ignore="MissingTranslation">The name stays on this phone: the others don\'t know they are in a group called this</string>
+    <string name="cipher_group_not_saved" tools:ignore="MissingTranslation">Can\'t save the group</string>
+    <!--
+        The chosen group could not be cleared, so encrypting would still send to
+        everyone. It says what applies NOW: the user must know where the next
+        message is about to go.-->
+    <string name="cipher_group_still_selected" tools:ignore="MissingTranslation">Warning: the group is still selected, the next message would go to everyone</string>
+    <!--
+        After a successful import. It says what was adopted, not "it worked": a
+        backup does not prove where it comes from, and this is the one moment
+        someone who imported another person's file can notice. The fingerprint can
+        be compared with the previous one; the number of already verified contacts
+        is the surprising figure a hostile backup would exploit.-->
+    <string name="cipher_backup_importato_dettaglio" tools:ignore="MissingTranslation">From now on your identity is this:\n\n%1$s\n\nIf you don\'t recognise this code, the backup wasn\'t yours: from now on you write with the key of whoever gave it to you.\n\nContacts already marked as verified in person: %2$d. You did not compare them yourself on this phone.</string>
+    <!-- Draft left in the row when entering a new field of the same app. See CipherCompose.inSospeso. -->
+    <string name="cipher_pending_title" tools:ignore="MissingTranslation">Unsent message</string>
+    <string name="cipher_pending_use" tools:ignore="MissingTranslation">Use here</string>
+    <string name="cipher_pending_delete" tools:ignore="MissingTranslation">Delete</string>
+    <string name="cipher_plain_confirm_title" tools:ignore="MissingTranslation">Really send unencrypted?</string>
+    <string name="cipher_plain_yes" tools:ignore="MissingTranslation">Yes</string>
+    <string name="cipher_plain_no" tools:ignore="MissingTranslation">No</string>
+    <string name="cipher_pending_choose" tools:ignore="MissingTranslation">This may be a different chat: first choose whether to use the unsent message here or delete it</string>
+    <string name="cipher_menu_delete_all" tools:ignore="MissingTranslation">Delete all</string>
+    <!--
+        The phone stops the keyboard and the system falls back to another: the
+        wizard step preventing it, the notice when it happened, and the reason for
+        the last closure as the system reports it. See CipherFermata.-->
+    <string name="cipher_setup_battery_title" tools:ignore="MissingTranslation">Keep %s running</string>
+    <string name="cipher_setup_battery_instruction" tools:ignore="MissingTranslation">Many phones stop apps to save battery, and then go back to another keyboard on their own. To prevent it, set %s to “Unrestricted” in the battery settings.</string>
+    <string name="cipher_setup_battery_action" tools:ignore="MissingTranslation">Open battery settings</string>
+    <string name="cipher_setup_battery_skip" tools:ignore="MissingTranslation">Skip</string>
+    <string name="cipher_lost_title" tools:ignore="MissingTranslation">%s is no longer your keyboard</string>
+    <string name="cipher_lost_text" tools:ignore="MissingTranslation">This usually happens when the phone\'s battery saver stops it. Remove the battery restriction, then select it again.</string>
+    <string name="cipher_lost_text_stopped" tools:ignore="MissingTranslation">It was force-stopped on %s. That is usually the phone\'s battery saver: remove the battery restriction, then select it again.</string>
+    <string name="cipher_lost_reselect" tools:ignore="MissingTranslation">Select again</string>
+    <string name="cipher_lost_battery" tools:ignore="MissingTranslation">Remove battery restriction</string>
+    <string name="cipher_stop_list" tools:ignore="MissingTranslation">Latest closures, as reported by the system:</string>
+    <string name="cipher_stop_forced" tools:ignore="MissingTranslation">force stop</string>
+    <string name="cipher_stop_updated" tools:ignore="MissingTranslation">app update</string>
+    <string name="cipher_stop_memory" tools:ignore="MissingTranslation">low memory</string>
+    <string name="cipher_stop_crash" tools:ignore="MissingTranslation">crash</string>
+    <string name="cipher_stop_other" tools:ignore="MissingTranslation">other</string>
+    <string name="cipher_battery_last_stop" tools:ignore="MissingTranslation">Last force stop: %s</string>
+</resources>

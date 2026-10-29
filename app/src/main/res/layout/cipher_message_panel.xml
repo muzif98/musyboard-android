@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    keyboard-cipher: the decrypted message, inside the keyboard window.
+
+    Exists because `DecryptActivity` cannot always be opened: some ROMs silently
+    refuse to start an activity from an app without visible windows. The keyboard
+    window is ours already and not subject to that (an IME shows it when it has
+    an input session).
+
+    It is also more consistent: plaintext does not leave the keyboard even for a
+    separate window. No task, no Recents, no intent, no caller to authenticate.
+
+    It lives inside `KeyboardWrapperView`, a FrameLayout, so it covers the keys
+    while reading without changing the keyboard height.
+
+    `FLAG_SECURE` on the IME window is set and cleared by code (see
+    CipherSchermoProtetto): it cannot be declared here.-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cipher_message_panel"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:visibility="gone"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/cipher_panel_who"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/cipher_panel_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="4dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textSize="15sp"
+            android:text="@string/cipher_panel_close" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <!--
+            The bubble. A generous `marginEnd` rather than full width, so it reads
+            as a received message rather than a box. `wrap_content` width with
+            `layout_gravity=start`: a short message is a short bubble.-->
+        <LinearLayout
+            android:id="@+id/cipher_panel_bubble"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="4dp"
+            android:orientation="vertical"
+            android:background="@drawable/cipher_bubble"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:id="@+id/cipher_panel_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textIsSelectable="false"
+                android:textSize="16sp" />
+
+            <!--
+                The time is INSIDE the bubble, bottom right, as in messaging apps:
+                outside it read like a header for the screen.-->
+            <TextView
+                android:id="@+id/cipher_panel_when"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:paddingTop="2dp"
+                android:textSize="11sp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Only the folder encrypted attachments are shared from.
+
+    Deliberately narrow: a FileProvider exposing all of `cacheDir` would let
+    anyone receiving a URI grant read the rest of the cache. Only ciphertext is in
+    here, the one thing meant to leave.-->
+<paths>
+    <cache-path name="cipher-share" path="cipher-share/" />
+</paths>

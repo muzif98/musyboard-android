@@ -1,0 +1,1 @@
+Keyboard that encrypts your messages before the chat app sees them

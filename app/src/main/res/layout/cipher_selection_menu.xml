@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    keyboard-cipher: the compose row's drop-down menu.
+
+    Appears when lifting the finger after selecting text IN THE ROW, and only
+    there: the one field where plaintext exists, and the one without the system
+    menu (an IME window does not take focus, and without focus Android offers no
+    selection toolbar).
+
+    It lives inside `KeyboardWrapperView`, a FrameLayout, so it overlays the keys
+    instead of taking height.
+
+    Colours and background are set in `CipherCompose.bind` from HeliBoard's
+    palette (POPUP_KEYS_BACKGROUND and KEY_TEXT, as for the long-press key panel),
+    so it follows the user's theme.
+
+    Labels are the system strings (@android:string/copy and friends): the same
+    already translated words the user sees in any other text field.-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cipher_selection_menu"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="top|start"
+    android:orientation="vertical"
+    android:visibility="gone"
+    android:background="@drawable/cipher_menu_background"
+    android:elevation="8dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp">
+
+    <TextView
+        android:id="@+id/cipher_menu_copy"
+        style="@style/CipherMenuItem"
+        android:text="@string/copy" />
+
+    <TextView
+        android:id="@+id/cipher_menu_paste"
+        style="@style/CipherMenuItem"
+        android:text="@string/paste" />
+
+    <TextView
+        android:id="@+id/cipher_menu_cut"
+        style="@style/CipherMenuItem"
+        android:text="@string/cut" />
+
+    <TextView
+        android:id="@+id/cipher_menu_delete"
+        style="@style/CipherMenuItem"
+        android:text="@string/cipher_menu_delete" />
+
+    <TextView
+        android:id="@+id/cipher_menu_select_all"
+        style="@style/CipherMenuItem"
+        android:text="@string/select_all" />
+
+    <!--
+        "Delete all" is not "select all" followed by "delete": it clears the
+        buffer by OVERWRITING it, the same path a message takes after a successful
+        send. Going through the selection would leave plaintext in the array.-->
+    <TextView
+        android:id="@+id/cipher_menu_delete_all"
+        style="@style/CipherMenuItem"
+        android:text="@string/cipher_menu_delete_all" />
+</LinearLayout>

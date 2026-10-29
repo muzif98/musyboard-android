@@ -1,0 +1,1 @@
+• Build fix so the app can be compiled by F-Droid (no changes for users).

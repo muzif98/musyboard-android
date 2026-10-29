@@ -1,0 +1,4 @@
+Prima versione firmata con la chiave di MusyBoard.
+• Nuovo identificativo: si installa accanto alle versioni di prova. Porta la tua identità con Contatti → backup → esporta, poi importala qui.
+• La parte di cifratura della tastiera ora è anche in inglese (in italiano sui telefoni in italiano).
+• «Invia in chiaro» non raddoppia più il messaggio.

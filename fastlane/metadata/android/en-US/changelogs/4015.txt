@@ -1,0 +1,4 @@
+• "Send as plain text" no longer duplicates the message when the app's field already contains text.
+• If sending fails, the field is restored exactly as it was.
+• Opening a copied message no longer makes the keyboard forget which app you were in.
+• Debug logging stays off while encryption is on.

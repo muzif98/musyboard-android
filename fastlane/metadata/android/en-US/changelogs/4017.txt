@@ -1,0 +1,1 @@
+• An unsent message no longer follows you silently into another chat of the same app. You are asked whether to use it there (and confirm who it is for) or delete it; until you choose, it can't be encrypted.
